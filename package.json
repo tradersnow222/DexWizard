@@ -1,0 +1,17 @@
+{
+  "name": "dexwizard",
+  "version": "1.0.0",
+  "description": "Dexbot is a Telegram bot designed as a personal project to enhance coding capabilities, specifically in the context of blockchain and cryptocurrency trading. Developed by a data engineer exploring new avenues in software development, the bot utilizes the 1inch API for price and transaction information and employs web3.py for executing purchases and transfers. It is in active development.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mongodb": "^6.5.0",
+    "web3": "^4.6.0"
+  }
+}
