@@ -6,6 +6,7 @@ bootstrap.jsonp
 build/
 classic.json
 classic.jsonp
+.env
 ext/
 modern.json
 modern.jsonp
