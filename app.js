@@ -1,4 +1,5 @@
 require('dotenv').config();
+console.log(process.env.TELEGRAM_BOT_TOKEN);
 const TelegramBot = require('node-telegram-bot-api');
 const { generateAddress, getETHBalance, sendTransaction, getTokenInfo, getTokenBalance } = require('./blockchain');
 const { connectDB } = require('./db');
@@ -65,3 +66,31 @@ bot.on('callback_query', (callbackQuery) => {
     });
 });
 
+const axios = require('axios');
+
+// Function to call 1inch API for token prices
+async function fetchTokenPrice(contractAddress) {
+  const apiUrl = `https://api.1inch.io/v3.0/42161/quote?tokens=${contractAddress}`;
+  try {
+    const response = await axios.get(apiUrl, {
+      headers: { "Authorization": `Bearer ${process.env.ONEINCH_API_KEY}` }
+    });
+    return response.data; // Or however you need to parse the response
+  } catch (error) {
+    console.error('Error fetching token price:', error);
+    throw new Error('Failed to fetch token price');
+  }
+}
+
+// Example usage within a bot command or callback query
+bot.on('message', async (msg) => {
+  if (msg.text.startsWith('/price')) {
+    const contractAddress = msg.text.split(' ')[1]; // Assuming the command is like "/price {contractAddress}"
+    try {
+      const priceInfo = await fetchTokenPrice(contractAddress);
+      bot.sendMessage(msg.chat.id, `Price info: ${JSON.stringify(priceInfo)}`);
+    } catch (error) {
+      bot.sendMessage(msg.chat.id, "Failed to fetch token price.");
+    }
+  }
+});
