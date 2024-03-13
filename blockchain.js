@@ -67,6 +67,7 @@ async function getFee(tx) {
   const maxPriorityFeePerGas = web3.utils.toBN(gasPrice).mul(web3.utils.toBN(1.5));
   const latestBlock = await web3.eth.getBlock('latest');
   const feePerGas = latestBlock.baseFeePerGas;
+ //blockchain.js
   const estimateGas = await web3.eth.estimateGas(tx);
   return { maxPriorityFeePerGas, feePerGas, estimateGas };
 }

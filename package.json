@@ -10,8 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@1inch/fusion-sdk": "^1.0.1-rc.1",
     "dotenv": "^16.4.5",
     "mongodb": "^6.5.0",
+    "node-fetch": "^3.3.2",
     "web3": "^4.6.0"
   }
 }

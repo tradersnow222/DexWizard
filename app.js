@@ -1,8 +1,11 @@
+//app.js
+
 require('dotenv').config();
 console.log(process.env.TELEGRAM_BOT_TOKEN);
 const TelegramBot = require('node-telegram-bot-api');
 const { generateAddress, getETHBalance, sendTransaction, getTokenInfo, getTokenBalance } = require('./blockchain');
 const { connectDB } = require('./db');
+const { fetchTokenPrice } = require('./tokenPrice.js');
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
@@ -57,40 +60,30 @@ bot.on('message', (msg) => {
   }
 });
 
-// Handle callback queries from inline keyboards
-bot.on('callback_query', (callbackQuery) => {
-  // It's good practice to call 'answerCallbackQuery' to prevent the user from waiting too long
-  bot.answerCallbackQuery(callbackQuery.id)
-    .then(() => {
-      handleCallbackQuery(callbackQuery, bot); // Use the imported function
-    });
-});
+bot.on('message', (msg) => {
+  if (msg.text && !msg.text.startsWith('/')) {
+    const chatId = msg.chat.id;
+    const potentialAddress = msg.text.trim();
 
-const axios = require('axios');
-
-// Function to call 1inch API for token prices
-async function fetchTokenPrice(contractAddress) {
-  const apiUrl = `https://api.1inch.io/v3.0/42161/quote?tokens=${contractAddress}`;
-  try {
-    const response = await axios.get(apiUrl, {
-      headers: { "Authorization": `Bearer ${process.env.ONEINCH_API_KEY}` }
-    });
-    return response.data; // Or however you need to parse the response
-  } catch (error) {
-    console.error('Error fetching token price:', error);
-    throw new Error('Failed to fetch token price');
-  }
-}
-
-// Example usage within a bot command or callback query
-bot.on('message', async (msg) => {
-  if (msg.text.startsWith('/price')) {
-    const contractAddress = msg.text.split(' ')[1]; // Assuming the command is like "/price {contractAddress}"
-    try {
-      const priceInfo = await fetchTokenPrice(contractAddress);
-      bot.sendMessage(msg.chat.id, `Price info: ${JSON.stringify(priceInfo)}`);
-    } catch (error) {
-      bot.sendMessage(msg.chat.id, "Failed to fetch token price.");
+    // Check if the text could be an Ethereum/Arbitrum address
+    if (/^0x[a-fA-F0-9]{40}$/.test(potentialAddress)) {
+      // It looks like an address, attempt to fetch the token price
+      fetchTokenPrice(potentialAddress)
+        .then(priceInfo => {
+          // Assuming priceInfo contains a 'price' property
+          const price = priceInfo.price || 'Price information not available';
+          bot.sendMessage(chatId, `Price: ${price}`);
+        })
+        .catch(err => {
+          console.error(err);
+          bot.sendMessage(chatId, 'Failed to fetch token price.');
+        });
+    } else {
+      // Handle other messages as before
+      const response = `You said: ${msg.text}`;
+      bot.sendMessage(chatId, response);
     }
   }
 });
+
+

@@ -1,4 +1,4 @@
-// Updated buttons.js to export functions and menus without initializing the bot
+//buttons.js
 
 const mainMenu = {
     reply_markup: JSON.stringify({
@@ -10,19 +10,21 @@ const mainMenu = {
     }),
   };
   
-  function handleCallbackQuery(callbackQuery, bot) {
-    const message = callbackQuery.message;
-    const data = callbackQuery.data;
-  
-    if (data === "GetP") {
-      // Replace 'Price information here...' with actual price fetching logic
-      bot.editMessageText('Price information here...', { chat_id: message.chat.id, message_id: message.message_id });
-    } else if (data === "Buy") {
-      // Replace 'Buying interface...' with actual buying logic
-      bot.editMessageText('Buying interface...', { chat_id: message.chat.id, message_id: message.message_id });
-    }
-    // Add more cases as needed
-  }
+const { fetchTokenPrice } = require('./tokenPrice.js'); // Assuming tokenPrice.js is in the same directory
+
+// Inside handleCallbackQuery function in buttons.js
+if (data === "GetP") {
+  const contractAddress = 'UserProvidedContractAddress'; // Replace with actual user input
+  fetchTokenPrice(contractAddress)
+    .then(priceInfo => {
+      bot.editMessageText(`Price: ${priceInfo}`, { chat_id: message.chat.id, message_id: message.message_id });
+    })
+    .catch(err => {
+      bot.editMessageText('Failed to fetch token price', { chat_id: message.chat.id, message_id: message.message_id });
+      console.error(err);
+    });
+}
+
   
   module.exports = { mainMenu, handleCallbackQuery };
   
