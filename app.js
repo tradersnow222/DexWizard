@@ -25,13 +25,13 @@ const mainMenu = {
 // Connect to the database
 connectDB().then(() => {
   // Start your bot after the database connection is established
-  // Your bot initialization code here
+  // Placeholder for initialization
 });
 
 // Handle '/start' command
 bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id;
-  // Call the generateAddress function from blockchain.js to create a new wallet
+  // Create a new wallet
   const { privateKey, address } = generateAddress();
 
   const welcomeMessage = `⚡⚡⚡ Welcome to DexWizard ⚡⚡⚡
@@ -65,7 +65,7 @@ bot.on('message', (msg) => {
     const chatId = msg.chat.id;
     const potentialAddress = msg.text.trim();
 
-    // Check if the text could be an Ethereum/Arbitrum address
+    // Check if the text could be an EVM(ARB) address
     if (/^0x[a-fA-F0-9]{40}$/.test(potentialAddress)) {
       // It looks like an address, attempt to fetch the token price
       fetchTokenPrice(potentialAddress)

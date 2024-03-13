@@ -26,7 +26,7 @@ function checkAddress(address) {
 }
 
 async function changeWallet(chatId, privateKey, address) {
-    const db = getDB(); // Assuming this function fetches your MongoDB connection
+    const db = getDB(); // Fetches MongoDB connection
     try {
       const usersCollection = db.collection('users');
       await usersCollection.updateOne(
@@ -41,8 +41,8 @@ async function changeWallet(chatId, privateKey, address) {
   }
 
 async function getAddressQR(chatId) {
-  // This function would need to interact with your database to fetch the user's address.
-  // Assuming address retrieval is done, generating QR code:
+  // Fetch the user's address.
+  // Assuming address retrieval is done, generates QR code:
   const address = "userAddressHere"; // Placeholder for actual address retrieval
   try {
     const qrStream = new QRCode.toFileStream(fs.createWriteStream('addressQR.png'), address, {

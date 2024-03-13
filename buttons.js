@@ -5,7 +5,6 @@ const mainMenu = {
       inline_keyboard: [
         [{ text: 'Get Price', callback_data: 'GetP' }],
         [{ text: 'Buy', callback_data: 'Buy' }],
-        // Add more buttons as needed
       ],
     }),
   };
@@ -14,7 +13,7 @@ const { fetchTokenPrice } = require('./tokenPrice.js'); // Assuming tokenPrice.j
 
 // Inside handleCallbackQuery function in buttons.js
 if (data === "GetP") {
-  const contractAddress = 'UserProvidedContractAddress'; // Replace with actual user input
+  const contractAddress = 'UserProvidedContractAddress'; 
   fetchTokenPrice(contractAddress)
     .then(priceInfo => {
       bot.editMessageText(`Price: ${priceInfo}`, { chat_id: message.chat.id, message_id: message.message_id });
