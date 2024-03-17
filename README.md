@@ -1,11 +1,11 @@
 # DexWizard
-A Telegram bot for lightning-fast, secure DeFi trading.
+A Telegram bot for lightning-fast, secure DeFi trading powered by 1inch Network's intent-based Fusion protocol.
 
 @DexWizardBot
 
 ### To-do list:
   - Wallet generation ✅
-  - Private key encryption, storage, and retrieval
+  - Private key encryption, storage, and retrieval (need to figure our Multisig, or self custody solution)
   - Refresh button
   - Settings button
   - Withdraw
@@ -13,12 +13,11 @@ A Telegram bot for lightning-fast, secure DeFi trading.
       - Name 
       - Ticker
       - Description
-      - Price
+      - Fusion quote
       - % price change in 1hr, 24hr, 1W, All
-  - 1inch Fusion integration (Buy / sell buttons)
+  - 1inch Fusion SDK integration (Buy / sell buttons)
   - Position management
       - Sell % of balance
       - SL / TP 
-      - Snipeability
-  - Multisig wallet creation, or self custody?
+      - Conditional orders
   - QR code (for deposits)
